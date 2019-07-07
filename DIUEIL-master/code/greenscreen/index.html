@@ -1,0 +1,63 @@
+<html>
+<head>
+  <style>
+  </style>
+  <script src="../../js/jquery.js"></script>
+  <script>
+
+  if(!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) alert("Votre navigateur ne supporte pas la UserMedia API")
+
+
+  back = null
+
+  $(()=> {
+    video = $('#video')[0];
+    context = $("#canvas")[0].getContext('2d');
+
+    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+      video.srcObject = stream;
+      video.play();
+    });
+
+    $("#snap").click(() => {
+      back = context.getImageData(0,0,640,480).data
+    })
+
+    setInterval(processFrame, 20);
+  })
+
+
+  function processFrame() {
+    th = parseInt($("#th").val())
+
+    context.drawImage(video,0,0,640,480);
+    var imgdata = context.getImageData(0,0,640,480)
+    var img = imgdata.data
+
+    for(var i=0; i<640*480*4; i+=4) {
+      if(back) {
+        var dist = (Math.abs(img[i]-back[i]) + Math.abs(img[i+1]-back[i+1]) + Math.abs(img[i+2]-back[i+2]))/3
+        if(dist < th) img[i+3] = 0;
+      }
+    }
+
+    context.putImageData(imgdata, 0,0)
+  }
+
+  </script>
+  <body>
+    <div style="position:fixed;top:0;left:0;z-index:100">
+
+      <input type="range" min="0" max="255" value="40" id="th" style="width:640px;" ></input>
+      <button id="snap">Take background</button>
+
+    </div>
+
+    <video id="video" width="640" height="480" autoplay></video>
+
+    <div style="position:relative;display:inline-block;width:640px;height:480px;">
+      <img style="position:absolute;left:0;top:0"      id="backimg" width="640" height="480"  src="back.jpg">
+      <canvas style="position:absolute;left:0;top:0"   id="canvas" width="640" height="480"></canvas>
+    </div>
+  </body>
+  </html>

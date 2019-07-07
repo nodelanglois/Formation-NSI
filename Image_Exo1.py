@@ -103,7 +103,9 @@ def supperposition(Image1, Image2) :
     for x in range(xmax):
         for y in range(ymax):
             #moyenne des pixels
-            px = (image1.getpixel((x, y))[0] + image2.getpixel((x, y))[0])//2, (image1.getpixel((x, y))[1] + image2.getpixel((x, y))[1])//2,(image1.getpixel((x, y))[2] + image2.getpixel((x, y))[2])//2
+            px = (image1.getpixel((x, y))[0] + image2.getpixel((x, y))[0])//2, 
+                 (image1.getpixel((x, y))[1] + image2.getpixel((x, y))[1])//2,
+                 (image1.getpixel((x, y))[2] + image2.getpixel((x, y))[2])//2
             (r,g,b) = px
             image.putpixel((x, y), px)
 

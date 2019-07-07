@@ -1,0 +1,139 @@
+<html><html><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="css/highlight.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="./js/jquery.js"></script>
+  <script src="./js/highlight.js"></script>
+  <script src="./js/ace/ace.js"></script>
+  <script>
+
+  if(typeof require === "function") { // Is in editor mode
+    cwd = require('electron').remote.app.getAppPath()
+    $ = require(cwd + '/src/lib/jquery.js')
+    hljs = require(cwd + '/src/lib/highlight.js')
+    editor = require(cwd + '/src/editor.js')
+  } else {
+    window.onkeydown = function(e) {
+      if(isNavigating) {
+        if(e.key == "ArrowLeft") prev();
+        else if(e.key == "ArrowRight") next();
+        else if(e.key == "Home") home();
+      }
+    }
+  }
+
+  function create_code_editor(e) {
+    var editor = ace.edit(e);
+    editor.session.setMode("ace/mode/" + "python");
+    editor.setTheme("ace/theme/tomorrow");
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setOption("maxLines", 1000);
+    editor.setOption("fontSize", "17pt");
+    $(e).attr("ace-editor-id", ace_editors.length)
+    ace_editors.push(editor)
+  }
+
+  $(function(){
+    home()
+    $("pre").each(function() { create_code_editor(this)  })
+
+    $("page").each(function(i) {
+      if(i==0) return
+      var p = $(this).children(".page")
+      if(p.length==0) {
+        $(this).append("<span class='page'></span>")
+        p = $(this).children(".page")
+      }
+      p.html(i)
+    })
+  })
+
+  isNavigating = true
+  page = 1
+
+  function goto_page(i) {
+    $("page").eq(page-1).attr("cur", null)
+    page=i;
+    $("page").eq(page-1).attr("cur", "")
+  }
+
+  function next() {
+    if(page>=$("page").length) return;
+    goto_page(page+1)
+  }
+
+  function prev() {
+    if(page<=1) return;
+    goto_page(page-1)
+  }
+
+  function home() {
+    goto_page(1)
+  }
+
+  function last() {
+    goto_page($("page").length-1)
+  }
+
+
+  </script>
+</head>
+<body>
+
+<page home="">
+  <div class="header"></div>
+<h1 class="title">BLOC1 - WEB côté client (2ème partie)<br>SVG/CSS3/JS/jquery/Media API/D3.JS</h1>
+<h2 class="author">DIU EIL - Université de Cergy-Pontoise</h2><h2 class="author">Jérôme Fellus</h2>
+<h3 class="affiliation">14 juin 2019&nbsp;<span style="font-size: 2.7vh;">&nbsp; &nbsp;9H-16H</span></h3>
+</page>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<page><h1>Au menu</h1><p></p><ul><li style="
+    margin-bottom: 18px;
+"><b>Un casse-brique en SVG + CSS3 + JS + jquery</b><br>Ressources :<br><ul><li><a href="https://api.jquery.com/">https://api.jquery.com/</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG">https://developer.mozilla.org/en-US/docs/Web/SVG</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></li><li>Google... "howto jquery make some stuff" !<br><br></li></ul></li><li style="
+    margin-bottom: 18px;
+"><b>Un green-screen en HTML5 avec la UserMedia API</b><br>Ressources :<br><ul><li><a href="https://www.html5rocks.com/en/tutorials/getusermedia/intro/" style="font-size: 2.7vh;">https://www.html5rocks.com/en/tutorials/getusermedia/intro/</a><br><br></li></ul></li><li style="
+    margin-bottom: 18px;
+"><b>Dessiner des courbes et des graphes avec la librairie D3.JS</b><br>Ressources :<br><ul><li><a href="https://d3js.org/">https://d3js.org/</a></li><li><a href="https://github.com/d3/d3/wiki/Gallery">https://github.com/d3/d3/wiki/Gallery</a></li><li><a href="https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89">https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89</a></li></ul></li></ul><p></p><span class="page">1</span><span class="page">1</span></page><page><h1>Un casse-brique en SVG + CSS3 + JS + jquery</h1><div><br></div>
+    <iframe src="code/cassebrique/index.html" style="
+    position: absolute;
+    left: 0;
+    top: 76px;
+    bottom: 0;
+    height: 93%;
+    overflow: hidden;
+"></iframe>
+    <span class="page">2</span></page><page cur=""><h1>Un green-screen en HTML5 avec la UserMedia API</h1><div><br></div><iframe src="code/greenscreen/index.html" style="
+    position: absolute;
+    left: 0;
+    top: 76px;
+    bottom: 0;
+    height: 93%;
+    overflow: hidden;
+"></iframe><span class="page">3</span></page><page><h1>Dessiner des courbes et des graphes avec la librairie D3.JS</h1><iframe src="code/plot/index.html" style="
+    position: absolute;
+    left: 0;
+    top: 76px;
+    bottom: 0;
+    height: 93%;
+    overflow: hidden;
+"></iframe><div><br></div><span class="page">4</span></page></body></html>
